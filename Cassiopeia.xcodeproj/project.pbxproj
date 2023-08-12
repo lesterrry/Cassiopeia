@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FC657D222A8808B500EC8806 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D212A8808B500EC8806 /* main.swift */; };
+		FC657D2E2A88117A00EC8806 /* Rainbow in Frameworks */ = {isa = PBXBuildFile; productRef = FC657D2D2A88117A00EC8806 /* Rainbow */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC657D2E2A88117A00EC8806 /* Rainbow in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +45,7 @@
 			children = (
 				FC657D202A8808B500EC8806 /* Cassiopeia */,
 				FC657D1F2A8808B500EC8806 /* Products */,
+				FC657D2B2A880E8300EC8806 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +65,13 @@
 			path = Cassiopeia;
 			sourceTree = "<group>";
 		};
+		FC657D2B2A880E8300EC8806 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -78,6 +88,9 @@
 			dependencies = (
 			);
 			name = Cassiopeia;
+			packageProductDependencies = (
+				FC657D2D2A88117A00EC8806 /* Rainbow */,
+			);
 			productName = Cassiopeia;
 			productReference = FC657D1E2A8808B500EC8806 /* Cassiopeia */;
 			productType = "com.apple.product-type.tool";
@@ -106,6 +119,9 @@
 				Base,
 			);
 			mainGroup = FC657D152A8808B500EC8806;
+			packageReferences = (
+				FC657D2C2A880FD800EC8806 /* XCRemoteSwiftPackageReference "Rainbow" */,
+			);
 			productRefGroup = FC657D1F2A8808B500EC8806 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -246,6 +262,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9Q6UB3UBW7;
 				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aydarmedia.cassiopeia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -257,6 +274,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9Q6UB3UBW7;
 				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aydarmedia.cassiopeia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -284,6 +302,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FC657D2C2A880FD800EC8806 /* XCRemoteSwiftPackageReference "Rainbow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Rainbow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FC657D2D2A88117A00EC8806 /* Rainbow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FC657D2C2A880FD800EC8806 /* XCRemoteSwiftPackageReference "Rainbow" */;
+			productName = Rainbow;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FC657D162A8808B500EC8806 /* Project object */;
 }
