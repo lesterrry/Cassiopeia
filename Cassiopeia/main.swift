@@ -9,8 +9,7 @@ import Foundation
 import Rainbow
 import KeychainBridge
 
-print("AAA")
-
 state(.line( Strings.welcomeMessage.description ))
-
+state(.space())
+state(.line( Strings.checkingKeychainMessage.description ))
 

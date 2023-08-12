@@ -29,7 +29,14 @@ public struct LocalizedString: CustomStringConvertible {
 }
 
 public struct Strings {
-    public static let welcomeMessage = LocalizedString(en: "Launching Cassiopeia...", ru: "Запуск Cassiopeia...")
+    public static let welcomeMessage = LocalizedString(
+        en: "Launching Cassiopeia...",
+        ru: "Запуск Cassiopeia..."
+    )
+    public static let checkingKeychainMessage = LocalizedString(
+        en: "Checking keychain...",
+        ru: "Проверка связки ключей..."
+    )
 }
 
 func localizedString(forKey key: String) -> String {
