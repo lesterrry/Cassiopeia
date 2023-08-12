@@ -7,6 +7,10 @@
 
 import Foundation
 import Rainbow
+import KeychainBridge
 
-print("Hello, World!")
+print("AAA")
+
+state(.line( Strings.welcomeMessage.description ))
+
 

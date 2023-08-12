@@ -9,23 +9,18 @@
 /* Begin PBXBuildFile section */
 		FC657D222A8808B500EC8806 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D212A8808B500EC8806 /* main.swift */; };
 		FC657D2E2A88117A00EC8806 /* Rainbow in Frameworks */ = {isa = PBXBuildFile; productRef = FC657D2D2A88117A00EC8806 /* Rainbow */; };
+		FC657D312A8812C100EC8806 /* KeychainBridge in Frameworks */ = {isa = PBXBuildFile; productRef = FC657D302A8812C100EC8806 /* KeychainBridge */; };
+		FC657D362A8813CB00EC8806 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D352A8813CB00EC8806 /* Version.swift */; };
+		FC657D382A88149E00EC8806 /* Statements.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D372A88149E00EC8806 /* Statements.swift */; };
+		FC657D3A2A88186600EC8806 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D392A88186600EC8806 /* Localization.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		FC657D1C2A8808B500EC8806 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		FC657D1E2A8808B500EC8806 /* Cassiopeia */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Cassiopeia; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC657D212A8808B500EC8806 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		FC657D352A8813CB00EC8806 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
+		FC657D372A88149E00EC8806 /* Statements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statements.swift; sourceTree = "<group>"; };
+		FC657D392A88186600EC8806 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC657D2E2A88117A00EC8806 /* Rainbow in Frameworks */,
+				FC657D312A8812C100EC8806 /* KeychainBridge in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +56,7 @@
 		FC657D202A8808B500EC8806 /* Cassiopeia */ = {
 			isa = PBXGroup;
 			children = (
+				FC657D322A88139500EC8806 /* Lib */,
 				FC657D212A8808B500EC8806 /* main.swift */,
 			);
 			path = Cassiopeia;
@@ -72,6 +69,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		FC657D322A88139500EC8806 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				FC657D342A8813B700EC8806 /* Fixtures */,
+				FC657D372A88149E00EC8806 /* Statements.swift */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		FC657D342A8813B700EC8806 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				FC657D352A8813CB00EC8806 /* Version.swift */,
+				FC657D392A88186600EC8806 /* Localization.swift */,
+			);
+			path = Fixtures;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -81,7 +96,6 @@
 			buildPhases = (
 				FC657D1A2A8808B500EC8806 /* Sources */,
 				FC657D1B2A8808B500EC8806 /* Frameworks */,
-				FC657D1C2A8808B500EC8806 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -90,6 +104,7 @@
 			name = Cassiopeia;
 			packageProductDependencies = (
 				FC657D2D2A88117A00EC8806 /* Rainbow */,
+				FC657D302A8812C100EC8806 /* KeychainBridge */,
 			);
 			productName = Cassiopeia;
 			productReference = FC657D1E2A8808B500EC8806 /* Cassiopeia */;
@@ -121,6 +136,7 @@
 			mainGroup = FC657D152A8808B500EC8806;
 			packageReferences = (
 				FC657D2C2A880FD800EC8806 /* XCRemoteSwiftPackageReference "Rainbow" */,
+				FC657D2F2A8812C100EC8806 /* XCRemoteSwiftPackageReference "keychainbridge" */,
 			);
 			productRefGroup = FC657D1F2A8808B500EC8806 /* Products */;
 			projectDirPath = "";
@@ -136,6 +152,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC657D362A8813CB00EC8806 /* Version.swift in Sources */,
+				FC657D382A88149E00EC8806 /* Statements.swift in Sources */,
+				FC657D3A2A88186600EC8806 /* Localization.swift in Sources */,
 				FC657D222A8808B500EC8806 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,6 +331,14 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		FC657D2F2A8812C100EC8806 /* XCRemoteSwiftPackageReference "keychainbridge" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lesterrry/keychainbridge";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -319,6 +346,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FC657D2C2A880FD800EC8806 /* XCRemoteSwiftPackageReference "Rainbow" */;
 			productName = Rainbow;
+		};
+		FC657D302A8812C100EC8806 /* KeychainBridge */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FC657D2F2A8812C100EC8806 /* XCRemoteSwiftPackageReference "keychainbridge" */;
+			productName = KeychainBridge;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
