@@ -13,6 +13,8 @@
 		FC657D362A8813CB00EC8806 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D352A8813CB00EC8806 /* Version.swift */; };
 		FC657D382A88149E00EC8806 /* Statements.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D372A88149E00EC8806 /* Statements.swift */; };
 		FC657D3A2A88186600EC8806 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D392A88186600EC8806 /* Localization.swift */; };
+		FC657D412A8931F400EC8806 /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D402A8931F400EC8806 /* Security.swift */; };
+		FC657D432A89339C00EC8806 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D422A89339C00EC8806 /* Operations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,8 @@
 		FC657D352A8813CB00EC8806 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		FC657D372A88149E00EC8806 /* Statements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statements.swift; sourceTree = "<group>"; };
 		FC657D392A88186600EC8806 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		FC657D402A8931F400EC8806 /* Security.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Security.swift; sourceTree = "<group>"; };
+		FC657D422A89339C00EC8806 /* Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +78,8 @@
 			children = (
 				FC657D342A8813B700EC8806 /* Fixtures */,
 				FC657D372A88149E00EC8806 /* Statements.swift */,
+				FC657D402A8931F400EC8806 /* Security.swift */,
+				FC657D422A89339C00EC8806 /* Operations.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -155,6 +161,8 @@
 				FC657D362A8813CB00EC8806 /* Version.swift in Sources */,
 				FC657D382A88149E00EC8806 /* Statements.swift in Sources */,
 				FC657D3A2A88186600EC8806 /* Localization.swift in Sources */,
+				FC657D432A89339C00EC8806 /* Operations.swift in Sources */,
+				FC657D412A8931F400EC8806 /* Security.swift in Sources */,
 				FC657D222A8808B500EC8806 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

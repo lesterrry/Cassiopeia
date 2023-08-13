@@ -37,21 +37,20 @@ public struct Strings {
         en: "Checking keychain...",
         ru: "Проверка связки ключей..."
     )
+    public static let keychainEntityNotFoundFailureMessage = LocalizedString(
+        en: "Entity not found in keychain",
+        ru: "Ключ не найден в связке ключей"
+    )
+    public static let successResultLabel = LocalizedString(
+        en: "[OKAY]",
+        ru: "[УСПЕХ]"
+    )
+    public static let failureResultLabel = LocalizedString(
+        en: "[FAIL]",
+        ru: "[ОШИБКА]"
+    )
+    public static let warningResultLabel = LocalizedString(
+        en: "[WARN]",
+        ru: "[ВНИМАНИЕ]"
+    )
 }
-
-func localizedString(forKey key: String) -> String {
-    let locale = Locale.current.identifier
-    let language = String(locale.prefix(2))
-    let localizationBundleName = "Localizable_\(language)"
-    print(localizationBundleName)
-    let path = CommandLine.arguments[0].components(separatedBy: "/")
-    let resourceDir = path[0...path.count - 2].joined(separator: "/") + "/Resources/"
-    let url = URL(fileURLWithPath: resourceDir + localizationBundleName + ".strings")
-
-    guard let localizationDict = NSDictionary(contentsOf: url), let localizedString = localizationDict[key] as? String else {
-        return key // Return the key if no localization found.
-    }
-
-    return localizedString
-}
-
