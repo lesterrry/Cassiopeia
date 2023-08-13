@@ -11,7 +11,5 @@ struct KeychainEntity {
         case deviceId = "DEVICE_ID"
         case appSecret = "APP_SECRET"
         case appId = "APP_ID"
-        case userLogin = "USER_LOGIN"
-        case userPassword = "USER_PASSWORD"
     }
 }

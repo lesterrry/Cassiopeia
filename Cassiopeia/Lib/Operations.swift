@@ -6,6 +6,7 @@
 //
 
 import KeychainBridge
+import Constellation
 
 struct OperationResult {
     enum Status {
@@ -31,5 +32,14 @@ struct Operation {
         guard let token = try? keychain.getToken(account: account)
         else { return OperationResult(.failure, message: Strings.keychainEntityNotFoundFailureMessage.description) }
         return OperationResult(.success, output: token)
+    }
+    public static func apiInit(appId: String, appSecret: String) -> OperationResult {
+        let client = ApiClient(appId: appId, appSecret: appSecret, userLogin: "", userPassword: "")
+        if client.hasUserToken {
+            return OperationResult(.success, output: client)
+        } else {
+#warning("Unimplemented")
+            fatalError("No api user token")
+        }
     }
 }

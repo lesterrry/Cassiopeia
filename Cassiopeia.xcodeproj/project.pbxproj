@@ -15,6 +15,7 @@
 		FC657D3A2A88186600EC8806 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D392A88186600EC8806 /* Localization.swift */; };
 		FC657D412A8931F400EC8806 /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D402A8931F400EC8806 /* Security.swift */; };
 		FC657D432A89339C00EC8806 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D422A89339C00EC8806 /* Operations.swift */; };
+		FC657D462A89662700EC8806 /* Constellation in Frameworks */ = {isa = PBXBuildFile; productRef = FC657D452A89662700EC8806 /* Constellation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 			files = (
 				FC657D2E2A88117A00EC8806 /* Rainbow in Frameworks */,
 				FC657D312A8812C100EC8806 /* KeychainBridge in Frameworks */,
+				FC657D462A89662700EC8806 /* Constellation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,6 +113,7 @@
 			packageProductDependencies = (
 				FC657D2D2A88117A00EC8806 /* Rainbow */,
 				FC657D302A8812C100EC8806 /* KeychainBridge */,
+				FC657D452A89662700EC8806 /* Constellation */,
 			);
 			productName = Cassiopeia;
 			productReference = FC657D1E2A8808B500EC8806 /* Cassiopeia */;
@@ -143,6 +146,7 @@
 			packageReferences = (
 				FC657D2C2A880FD800EC8806 /* XCRemoteSwiftPackageReference "Rainbow" */,
 				FC657D2F2A8812C100EC8806 /* XCRemoteSwiftPackageReference "keychainbridge" */,
+				FC657D442A89662700EC8806 /* XCRemoteSwiftPackageReference "Constellation" */,
 			);
 			productRefGroup = FC657D1F2A8808B500EC8806 /* Products */;
 			projectDirPath = "";
@@ -347,6 +351,14 @@
 				minimumVersion = 0.1.1;
 			};
 		};
+		FC657D442A89662700EC8806 /* XCRemoteSwiftPackageReference "Constellation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lesterrry/Constellation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -359,6 +371,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FC657D2F2A8812C100EC8806 /* XCRemoteSwiftPackageReference "keychainbridge" */;
 			productName = KeychainBridge;
+		};
+		FC657D452A89662700EC8806 /* Constellation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FC657D442A89662700EC8806 /* XCRemoteSwiftPackageReference "Constellation" */;
+			productName = Constellation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

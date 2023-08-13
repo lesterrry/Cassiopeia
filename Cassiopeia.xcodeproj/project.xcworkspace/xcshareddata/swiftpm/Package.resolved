@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "constellation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lesterrry/Constellation",
+      "state" : {
+        "revision" : "58d899ee0c86d87bdfe953034f80edd96143c04f",
+        "version" : "0.1.1"
+      }
+    },
+    {
       "identity" : "keychainbridge",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lesterrry/keychainbridge",

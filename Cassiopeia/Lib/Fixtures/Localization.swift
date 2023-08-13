@@ -41,6 +41,10 @@ public struct Strings {
         en: "Entity not found in keychain",
         ru: "Ключ не найден в связке ключей"
     )
+    public static let necessaryKeychainEntitiesNotFoundFatalErrorMessage = LocalizedString(
+        en: "Necessary tokens not found in keychain",
+        ru: "Необходимые ключи отсутствуют в связке"
+    )
     public static let successResultLabel = LocalizedString(
         en: "[OKAY]",
         ru: "[УСПЕХ]"
@@ -52,5 +56,9 @@ public struct Strings {
     public static let warningResultLabel = LocalizedString(
         en: "[WARN]",
         ru: "[ВНИМАНИЕ]"
+    )
+    public static let fatalErrorLabel = LocalizedString(
+        en: "FATAL",
+        ru: "КРИТИЧ"
     )
 }
