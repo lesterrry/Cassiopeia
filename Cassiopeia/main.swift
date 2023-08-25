@@ -11,13 +11,16 @@ state(.line( Strings.welcomeMessage.description ))
 state(.space())
 state(.line( Strings.checkingKeychainMessage.description ))
 
-let existingTokens = stateKeychainCheck()
-guard
-    let appId = existingTokens[KeychainEntity.Account.appId],
-    let appSecret = existingTokens[KeychainEntity.Account.appSecret],
-    let deviceId = existingTokens[KeychainEntity.Account.deviceId]
-else {
-    state(.fatalError(Strings.necessaryKeychainEntitiesNotFoundFatalErrorMessage.description)); fatalError()
-}
+var tokens = stateKeychainCheck()
 
-let client = stateApiClientInit(appId: appId, appSecret: appSecret)
+state(.linebreak)
+tokens = stateFulfillTokensDialog(tokens: tokens)
+
+print(tokens)
+//var appId = existingTokens[KeychainEntity.Account.appId]
+//var appSecret = existingTokens[KeychainEntity.Account.appSecret]
+//var deviceId = existingTokens[KeychainEntity.Account.deviceId]
+
+//readSecretFromConsole(prompt: "heyy ")
+
+//let client = stateApiClientInit(appId: appId, appSecret: appSecret)

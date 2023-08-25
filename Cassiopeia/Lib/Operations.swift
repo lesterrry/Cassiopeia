@@ -8,6 +8,8 @@
 import KeychainBridge
 import Constellation
 
+fileprivate let keychain = Keychain(serviceName: KeychainEntity.serviceName)
+
 struct OperationResult {
     enum Status {
         case success
@@ -27,12 +29,22 @@ struct OperationResult {
 }
 
 struct Operation {
+    public static func keychainPut(account: String, value: String) -> OperationResult {
+        do {
+            try keychain.saveToken(value, account: account)
+        } catch {
+            return OperationResult(.failure, message: error.localizedDescription)
+        }
+        return OperationResult(.success)
+    }
+    
     public static func keychainCheck(account: String) -> OperationResult {
         let keychain = Keychain(serviceName: KeychainEntity.serviceName)
         guard let token = try? keychain.getToken(account: account)
         else { return OperationResult(.failure, message: Strings.keychainEntityNotFoundFailureMessage.description) }
         return OperationResult(.success, output: token)
     }
+    
     public static func apiInit(appId: String, appSecret: String) -> OperationResult {
         let client = ApiClient(appId: appId, appSecret: appSecret, userLogin: "", userPassword: "")
         if client.hasUserToken {

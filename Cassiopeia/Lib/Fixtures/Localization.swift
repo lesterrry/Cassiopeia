@@ -45,6 +45,18 @@ public struct Strings {
         en: "Necessary tokens not found in keychain",
         ru: "Необходимые ключи отсутствуют в связке"
     )
+    public static let necessaryKeychainEntityNotFoundMessage = LocalizedString(
+        en: "Necessary token not found in keychain",
+        ru: "Необходимый ключ отсутствуют в связке"
+    )
+    public static let genericValuePrompt = LocalizedString(
+        en: "Enter it",
+        ru: "Внесите его"
+    )
+    public static let genericWritingMessage = LocalizedString(
+        en: "Writing",
+        ru: "Запись"
+    )
     public static let successResultLabel = LocalizedString(
         en: "[OKAY]",
         ru: "[УСПЕХ]"
