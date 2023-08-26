@@ -9,16 +9,22 @@ import Darwin.C
 import Rainbow
 import Constellation
 
-typealias TokenCollection = [KeychainEntity.Account : String?]
+typealias TokenCollection = [KeychainEntity.EssentialAccount : String?]
 
 enum Statement {
     case line(String, Color? = nil)
     case space(Int = 1)
-    case operation(String, Int = 1)
+    case operation(String, Int = 0)
     case operationResult(OperationResult, Int = 1)
     case fatalError(String)
     case input(String, Bool = false, Int = 1)
     case linebreak
+    case modal(String)
+}
+
+fileprivate enum ModalResponse {
+    case yes
+    case no
 }
 
 fileprivate func makeIndent(_ times: Int) -> String {
@@ -53,7 +59,7 @@ fileprivate func read(_ prompt: String, secret: Bool = false) -> String {
 }
 
 @discardableResult
-func state(_ statement: Statement) -> String? {
+func state(_ statement: Statement) -> Any? {
     switch statement {
     case .line(let content, let color):
         write(resolveColoredString(content, color: color))
@@ -67,15 +73,27 @@ func state(_ statement: Statement) -> String? {
         case .failure: write(Strings.failureResultLabel.description.applyingCodes(Color.red))
         case .warning: write(Strings.warningResultLabel.description.applyingCodes(Color.yellow))
         }
-        if let message = result.message { write("\(makeIndent(indentLevel))    >>> \(message)") }
+        if let message = result.message { write("\(makeIndent(indentLevel))>>> \(message)") }
     case .fatalError(let message):
-        write("\(Strings.fatalErrorLabel.description): \(message)".applyingCodes(Color.red))
+        write("\(Strings.fatalErrorLabel): \(message)".applyingCodes(Color.red))
         exit(1)
     case .input(let prompt, let secret, let indentLevel):
         let input = read("\(makeIndent(indentLevel))\(prompt): ", secret: secret)
         return input
     case .linebreak:
         print()
+    case .modal(let prompt):
+        let label = "\(Strings.modalYesLabel)/\(Strings.modalNoLabel)"
+        while true {
+            let response = read("\(prompt) \(label): ")
+            if Strings.modalYesLabel.every.contains(response) {
+                return ModalResponse.yes
+            } else if Strings.modalNoLabel.every.contains(response) {
+                return ModalResponse.no
+            } else {
+                write(Strings.modalExplicitResponsePrompt.description)
+            }
+        }
     }
     return nil
 }
@@ -83,35 +101,56 @@ func state(_ statement: Statement) -> String? {
 @discardableResult
 func stateKeychainCheck() -> TokenCollection {
     var tokens: TokenCollection = [:]
-    for i in KeychainEntity.Account.allCases {
-        state(.operation(i.rawValue))
+    for i in KeychainEntity.EssentialAccount.allCases {
+        state(.operation(i.rawValue, 1))
         let result = Operation.keychainCheck(account: i.rawValue)
-        state(.operationResult(result))
-        tokens[i] = result.output as? String
+        state(.operationResult(result, 2))
+        tokens[i] = .some(result.output as? String)
     }
     return tokens
 }
 
 func stateFulfillTokensDialog(tokens: TokenCollection) -> TokenCollection {
     var fulfilledTokens = tokens
+    var needsLinebreak = false
     for (name, value) in tokens {
         if value == nil {
-            state(.line( "\(Strings.necessaryKeychainEntityNotFoundMessage.description): \(name.rawValue)" ))
+            state(.line( "\(Strings.necessaryKeychainEntityNotFoundDialogMessage): \(name.rawValue)" ))
             let input = state(.input(Strings.genericValuePrompt.description, true))
             state(.operation(Strings.genericWritingMessage.description, 2))
-            let result = Operation.keychainPut(account: name.rawValue, value: input!)
+            let result = Operation.keychainPut(account: name.rawValue, value: input! as! String)
             state(.operationResult(result))
-            fulfilledTokens[name] = input
+            fulfilledTokens[name] = (input as! String)
+            needsLinebreak = true
         }
     }
+    if needsLinebreak { state(.linebreak) }
     return fulfilledTokens
 }
 
 @discardableResult
-func stateApiClientInit(appId: String, appSecret: String) -> ApiClient {
-    state(.line("Авторизация..."))
-    state(.operation("Проверка токена"))
+func stateApiClientInit(appId: String, appSecret: String) async -> ApiClient {
+    state(.operation(Strings.checkingAuthTokenMessage.description))
     let result = Operation.apiInit(appId: appId, appSecret: appSecret)
     state(.operationResult(result))
+    var client = result.output as! ApiClient
+    switch result.status {
+    case .success:
+        return client
+    case .warning:
+        state(.linebreak)
+        let response = state(.modal(Strings.authTokenDialogPrompt.description)) as! ModalResponse
+        if response == .yes {
+            let login = state(.input(Strings.genericLoginPrompt.description, true)) as! String
+            let password = state(.input(Strings.genericPasswordPrompt.description, true)) as! String
+            state(.operation(Strings.AuthMessage.description))
+            let result = await Operation.apiAuth(&client, login: login, password: password)
+            state(.operationResult(result))
+        } else {
+            state(.fatalError(Strings.necessaryKeychainEntitiesNotFoundFatalErrorMessage.description))
+        }
+    default:
+        ()
+    }
     return result.output as! ApiClient
 }

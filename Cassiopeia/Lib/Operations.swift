@@ -46,12 +46,26 @@ struct Operation {
     }
     
     public static func apiInit(appId: String, appSecret: String) -> OperationResult {
-        let client = ApiClient(appId: appId, appSecret: appSecret, userLogin: "", userPassword: "")
+        let client = ApiClient(appId: appId, appSecret: appSecret)
         if client.hasUserToken {
             return OperationResult(.success, output: client)
         } else {
-#warning("Unimplemented")
-            fatalError("No api user token")
+            return OperationResult(.warning, message: Strings.authTokenNotFoundWarningMessage.description, output: client)
         }
+    }
+    
+    public static func apiAuth(_ client: inout ApiClient, login: String, password: String) async -> OperationResult {
+        var operationResult: OperationResult? = nil
+        client.setCredentials(login: login, password: password)
+        await client.auth { result in
+            switch result {
+            case .failure(let error):
+                operationResult = OperationResult(.failure, message: "\(error.localizedDescription): \(error as! ApiClient.AuthError)")
+            case .success(let token):
+                print(token)
+                operationResult = OperationResult(.success)
+            }
+        }
+        return operationResult!
     }
 }

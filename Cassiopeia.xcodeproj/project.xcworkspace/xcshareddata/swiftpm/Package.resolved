@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lesterrry/Constellation",
       "state" : {
-        "revision" : "58d899ee0c86d87bdfe953034f80edd96143c04f",
-        "version" : "0.1.1"
+        "revision" : "922dbbfa767fa1491b746a188f27f7f2f7d405df",
+        "version" : "0.1.4"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lesterrry/keychainbridge",
       "state" : {
-        "revision" : "f996853845e31f6103433301663516e02d151900",
-        "version" : "0.1.1"
+        "revision" : "863147248277bc8eb158d4e34e476d60931f3972",
+        "version" : "0.1.2"
       }
     },
     {
