@@ -57,7 +57,7 @@ struct Operation {
     public static func apiAuth(_ client: inout ApiClient, login: String, password: String, smsCode: String? = nil) async -> OperationResult {
         var operationResult: OperationResult? = nil
         client.setCredentials(login: login, password: password)
-        await client.auth { result in
+        await client.auth(smsCode: smsCode) { result in
             switch result {
             case .failure(let error):
                 guard case ApiClient.AuthError.secondFactorRequired = error else {
@@ -67,7 +67,7 @@ struct Operation {
                 operationResult = OperationResult(.warning, message: Strings.secondFactorEnabledWarningMessage.description)
             case .success(let token):
                 print(token)
-                operationResult = OperationResult(.success)
+                operationResult = OperationResult(.success, output: token)
             }
         }
         return operationResult!

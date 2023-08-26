@@ -57,6 +57,10 @@ public struct Strings {
         en: "Necessary tokens not found in keychain",
         ru: "Необходимые ключи отсутствуют в связке"
     )
+    public static let apiClientInitFailureFatalErrorMessage = LocalizedString(
+        en: "Failed to initialize api client",
+        ru: "Не удалось инициализировать клиент"
+    )
     public static let necessaryKeychainEntityNotFoundDialogMessage = LocalizedString(
         en: "Necessary token not found in keychain",
         ru: "Необходимый ключ отсутствуют в связке"
@@ -84,6 +88,10 @@ public struct Strings {
     public static let genericPasswordPrompt = LocalizedString(
         en: "Enter password",
         ru: "Введите пароль"
+    )
+    public static let genericSMSCodePrompt = LocalizedString(
+        en: "Enter SMS code",
+        ru: "Введите код из СМС"
     )
     public static let modalExplicitResponsePrompt = LocalizedString(
         en: "Please state explicitly: '\(modalYesLabel.en)' or '\(modalNoLabel.en)'",

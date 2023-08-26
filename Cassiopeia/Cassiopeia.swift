@@ -1,5 +1,5 @@
 //
-//  main.swift
+//  Cassiopeia.swift
 //  Cassiopeia
 //
 //  Created by aydar.media on 12.08.2023.
@@ -23,5 +23,14 @@ struct Main {
         guard tokens[.appId] != nil && tokens[.appSecret] != nil else { state(.fatalError(Strings.necessaryKeychainEntitiesNotFoundFatalErrorMessage.description)); exit(1) }
 
         let client = await stateApiClientInit(appId: tokens[.appId]!!, appSecret: tokens[.appSecret]!!)
+        
+        await client.getDevicesForCurrentUser { result in
+            switch result {
+            case .success(let data):
+                print(data)
+            case .failure(let error):
+                print("\(error)", error.localizedDescription)
+            }
+        }
     }
 }

@@ -136,17 +136,41 @@ func stateApiClientInit(appId: String, appSecret: String) async -> ApiClient {
     var client = result.output as! ApiClient
     switch result.status {
     case .success:
+        state(.operation(Strings.AuthMessage.description))
+        await client.auth() { result in
+            switch result {
+            case .success(_):
+                state(.operationResult(OperationResult(.success)))
+            case .failure(let error):
+                state(.operationResult(OperationResult(.failure, message: "\(error)" + error.localizedDescription)))
+            }
+        }
+        
         return client
     case .warning:
         state(.linebreak)
         let response = state(.modal(Strings.authTokenDialogPrompt.description)) as! ModalResponse
         if response == .yes {
-            let login = state(.input(Strings.genericLoginPrompt.description, true)) as! String
+            let login = state(.input(Strings.genericLoginPrompt.description)) as! String
             let password = state(.input(Strings.genericPasswordPrompt.description, true)) as! String
             state(.linebreak)
             state(.operation(Strings.AuthMessage.description))
             let result = await Operation.apiAuth(&client, login: login, password: password)
             state(.operationResult(result))
+            switch result.status {
+            case .success:
+                return client
+            case .failure:
+                state(.fatalError(Strings.apiClientInitFailureFatalErrorMessage.description))
+            case .warning:
+                state(.linebreak)
+                let code = state(.input(Strings.genericSMSCodePrompt.description, false, 0)) as! String
+                state(.linebreak)
+                state(.operation(Strings.AuthMessage.description))
+                let result = await Operation.apiAuth(&client, login: login, password: password, smsCode: code)
+                state(.operationResult(result))
+                return client
+            }
         } else {
             state(.fatalError(Strings.necessaryKeychainEntitiesNotFoundFatalErrorMessage.description))
         }
