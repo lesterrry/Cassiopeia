@@ -143,6 +143,7 @@ func stateApiClientInit(appId: String, appSecret: String) async -> ApiClient {
         if response == .yes {
             let login = state(.input(Strings.genericLoginPrompt.description, true)) as! String
             let password = state(.input(Strings.genericPasswordPrompt.description, true)) as! String
+            state(.linebreak)
             state(.operation(Strings.AuthMessage.description))
             let result = await Operation.apiAuth(&client, login: login, password: password)
             state(.operationResult(result))

@@ -69,6 +69,10 @@ public struct Strings {
         en: "Auth token not found",
         ru: "Токен авторизации отсутствует"
     )
+    public static let secondFactorEnabledWarningMessage = LocalizedString(
+        en: "2FA enabled",
+        ru: "Включена двухфакторная аутентификация"
+    )
     public static let genericValuePrompt = LocalizedString(
         en: "Enter it",
         ru: "Внесите его"

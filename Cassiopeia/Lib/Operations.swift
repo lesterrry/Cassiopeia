@@ -54,13 +54,17 @@ struct Operation {
         }
     }
     
-    public static func apiAuth(_ client: inout ApiClient, login: String, password: String) async -> OperationResult {
+    public static func apiAuth(_ client: inout ApiClient, login: String, password: String, smsCode: String? = nil) async -> OperationResult {
         var operationResult: OperationResult? = nil
         client.setCredentials(login: login, password: password)
         await client.auth { result in
             switch result {
             case .failure(let error):
-                operationResult = OperationResult(.failure, message: "\(error.localizedDescription): \(error as! ApiClient.AuthError)")
+                guard case ApiClient.AuthError.secondFactorRequired = error else {
+                    operationResult = OperationResult(.failure, message: "\(error.localizedDescription): \(error as! ApiClient.AuthError)")
+                    break
+                }
+                operationResult = OperationResult(.warning, message: Strings.secondFactorEnabledWarningMessage.description)
             case .success(let token):
                 print(token)
                 operationResult = OperationResult(.success)
