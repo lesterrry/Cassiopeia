@@ -41,6 +41,10 @@ public struct Strings {
         en: "Checking keychain...",
         ru: "Проверка связки ключей..."
     )
+    public static let checkingSettingsMessage = LocalizedString(
+        en: "Checking settings...",
+        ru: "Проверка настроек..."
+    )
     public static let checkingAuthTokenMessage = LocalizedString(
         en: "Checking auth token",
         ru: "Проверка токена"
@@ -49,9 +53,17 @@ public struct Strings {
         en: "Authorizing",
         ru: "Авторизация"
     )
+    public static let GenericRunMessage = LocalizedString(
+        en: "Running",
+        ru: "Исполнение"
+    )
     public static let keychainEntityNotFoundFailureMessage = LocalizedString(
         en: "Entity not found in keychain",
         ru: "Ключ не найден в связке ключей"
+    )
+    public static let settingNotFoundFailureMessage = LocalizedString(
+        en: "Setting not found in user defaults",
+        ru: "Настройка не найдена"
     )
     public static let necessaryKeychainEntitiesNotFoundFatalErrorMessage = LocalizedString(
         en: "Necessary tokens not found in keychain",
@@ -73,6 +85,10 @@ public struct Strings {
         en: "Auth token not found",
         ru: "Токен авторизации отсутствует"
     )
+    public static let unknownCommandErrorMessage = LocalizedString(
+        en: "Unknown command",
+        ru: "Неизвестная команда, используйте help"
+    )
     public static let secondFactorEnabledWarningMessage = LocalizedString(
         en: "2FA enabled",
         ru: "Включена двухфакторная аутентификация"
@@ -93,9 +109,17 @@ public struct Strings {
         en: "Enter SMS code",
         ru: "Введите код из СМС"
     )
+    public static let deviceIdPrompt = LocalizedString(
+        en: "Enter car ID",
+        ru: "Введите ID автомобиля"
+    )
     public static let modalExplicitResponsePrompt = LocalizedString(
         en: "Please state explicitly: '\(modalYesLabel.en)' or '\(modalNoLabel.en)'",
         ru: "Пожалуйста, ответьте явно: '\(modalYesLabel.ru)' или '\(modalNoLabel.ru)'"
+    )
+    public static let readyForInputMessage = LocalizedString(
+        en: "Awaiting commands",
+        ru: "Готов к командам"
     )
     public static let genericWritingMessage = LocalizedString(
         en: "Writing",
@@ -124,5 +148,9 @@ public struct Strings {
     public static let fatalErrorLabel = LocalizedString(
         en: "FATAL",
         ru: "КРИТИЧ"
+    )
+    public static let nilValueLabel = LocalizedString(
+        en: "<nil>",
+        ru: "<nil>"
     )
 }

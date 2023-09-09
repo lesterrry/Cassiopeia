@@ -7,11 +7,9 @@
 
 struct KeychainEntity {
     public static let serviceName = "com.aydarmedia.cassiopeia"
-    public enum EssentialAccount: String, CaseIterable {
+    
+    public enum Account: String, CaseIterable {
         case appSecret = "APP_SECRET"
         case appId = "APP_ID"
-    }
-    public enum AdditionalAccount: String, CaseIterable {
-        case deviceId = "DEVICE_ID"
     }
 }

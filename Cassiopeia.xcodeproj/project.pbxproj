@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FC657D222A8808B500EC8806 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D212A8808B500EC8806 /* main.swift */; };
+		FC5B3E1F2A9A8C7400305339 /* Cassiopeia.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5B3E1E2A9A8C7400305339 /* Cassiopeia.swift */; };
+		FC5B3E212A9A8C9E00305339 /* ConsoleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5B3E202A9A8C9E00305339 /* ConsoleUtils.swift */; };
 		FC657D2E2A88117A00EC8806 /* Rainbow in Frameworks */ = {isa = PBXBuildFile; productRef = FC657D2D2A88117A00EC8806 /* Rainbow */; };
 		FC657D312A8812C100EC8806 /* KeychainBridge in Frameworks */ = {isa = PBXBuildFile; productRef = FC657D302A8812C100EC8806 /* KeychainBridge */; };
 		FC657D362A8813CB00EC8806 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D352A8813CB00EC8806 /* Version.swift */; };
@@ -16,16 +17,25 @@
 		FC657D412A8931F400EC8806 /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D402A8931F400EC8806 /* Security.swift */; };
 		FC657D432A89339C00EC8806 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC657D422A89339C00EC8806 /* Operations.swift */; };
 		FC657D462A89662700EC8806 /* Constellation in Frameworks */ = {isa = PBXBuildFile; productRef = FC657D452A89662700EC8806 /* Constellation */; };
+		FCCC10B32AACFD600034E9A8 /* CassiopeiaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCC10B22AACFD600034E9A8 /* CassiopeiaTests.swift */; };
+		FCCC10B82AACFE3E0034E9A8 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCC10B72AACFE3E0034E9A8 /* Settings.swift */; };
+		FCCC10B92AACFE3E0034E9A8 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCC10B72AACFE3E0034E9A8 /* Settings.swift */; };
+		FCCC10BB2AAD313D0034E9A8 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCC10BA2AAD313D0034E9A8 /* Data.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FC5B3E1E2A9A8C7400305339 /* Cassiopeia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cassiopeia.swift; sourceTree = "<group>"; };
+		FC5B3E202A9A8C9E00305339 /* ConsoleUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleUtils.swift; sourceTree = "<group>"; };
 		FC657D1E2A8808B500EC8806 /* Cassiopeia */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Cassiopeia; sourceTree = BUILT_PRODUCTS_DIR; };
-		FC657D212A8808B500EC8806 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		FC657D352A8813CB00EC8806 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		FC657D372A88149E00EC8806 /* Statements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statements.swift; sourceTree = "<group>"; };
 		FC657D392A88186600EC8806 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		FC657D402A8931F400EC8806 /* Security.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Security.swift; sourceTree = "<group>"; };
 		FC657D422A89339C00EC8806 /* Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operations.swift; sourceTree = "<group>"; };
+		FCCC10B02AACFD600034E9A8 /* CassiopeiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CassiopeiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCCC10B22AACFD600034E9A8 /* CassiopeiaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CassiopeiaTests.swift; sourceTree = "<group>"; };
+		FCCC10B72AACFE3E0034E9A8 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		FCCC10BA2AAD313D0034E9A8 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +49,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FCCC10AD2AACFD600034E9A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -46,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				FC657D202A8808B500EC8806 /* Cassiopeia */,
+				FCCC10B12AACFD600034E9A8 /* CassiopeiaTests */,
 				FC657D1F2A8808B500EC8806 /* Products */,
 				FC657D2B2A880E8300EC8806 /* Frameworks */,
 			);
@@ -55,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				FC657D1E2A8808B500EC8806 /* Cassiopeia */,
+				FCCC10B02AACFD600034E9A8 /* CassiopeiaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -63,7 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				FC657D322A88139500EC8806 /* Lib */,
-				FC657D212A8808B500EC8806 /* main.swift */,
+				FC5B3E1E2A9A8C7400305339 /* Cassiopeia.swift */,
 			);
 			path = Cassiopeia;
 			sourceTree = "<group>";
@@ -79,9 +98,12 @@
 			isa = PBXGroup;
 			children = (
 				FC657D342A8813B700EC8806 /* Fixtures */,
+				FC5B3E202A9A8C9E00305339 /* ConsoleUtils.swift */,
 				FC657D372A88149E00EC8806 /* Statements.swift */,
 				FC657D402A8931F400EC8806 /* Security.swift */,
 				FC657D422A89339C00EC8806 /* Operations.swift */,
+				FCCC10B72AACFE3E0034E9A8 /* Settings.swift */,
+				FCCC10BA2AAD313D0034E9A8 /* Data.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -93,6 +115,14 @@
 				FC657D392A88186600EC8806 /* Localization.swift */,
 			);
 			path = Fixtures;
+			sourceTree = "<group>";
+		};
+		FCCC10B12AACFD600034E9A8 /* CassiopeiaTests */ = {
+			isa = PBXGroup;
+			children = (
+				FCCC10B22AACFD600034E9A8 /* CassiopeiaTests.swift */,
+			);
+			path = CassiopeiaTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +149,23 @@
 			productReference = FC657D1E2A8808B500EC8806 /* Cassiopeia */;
 			productType = "com.apple.product-type.tool";
 		};
+		FCCC10AF2AACFD600034E9A8 /* CassiopeiaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FCCC10B62AACFD600034E9A8 /* Build configuration list for PBXNativeTarget "CassiopeiaTests" */;
+			buildPhases = (
+				FCCC10AC2AACFD600034E9A8 /* Sources */,
+				FCCC10AD2AACFD600034E9A8 /* Frameworks */,
+				FCCC10AE2AACFD600034E9A8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CassiopeiaTests;
+			productName = CassiopeiaTests;
+			productReference = FCCC10B02AACFD600034E9A8 /* CassiopeiaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -130,6 +177,9 @@
 				LastUpgradeCheck = 1400;
 				TargetAttributes = {
 					FC657D1D2A8808B500EC8806 = {
+						CreatedOnToolsVersion = 14.0.1;
+					};
+					FCCC10AF2AACFD600034E9A8 = {
 						CreatedOnToolsVersion = 14.0.1;
 					};
 				};
@@ -153,21 +203,44 @@
 			projectRoot = "";
 			targets = (
 				FC657D1D2A8808B500EC8806 /* Cassiopeia */,
+				FCCC10AF2AACFD600034E9A8 /* CassiopeiaTests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FCCC10AE2AACFD600034E9A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FC657D1A2A8808B500EC8806 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC5B3E1F2A9A8C7400305339 /* Cassiopeia.swift in Sources */,
 				FC657D362A8813CB00EC8806 /* Version.swift in Sources */,
 				FC657D382A88149E00EC8806 /* Statements.swift in Sources */,
+				FC5B3E212A9A8C9E00305339 /* ConsoleUtils.swift in Sources */,
 				FC657D3A2A88186600EC8806 /* Localization.swift in Sources */,
 				FC657D432A89339C00EC8806 /* Operations.swift in Sources */,
 				FC657D412A8931F400EC8806 /* Security.swift in Sources */,
-				FC657D222A8808B500EC8806 /* main.swift in Sources */,
+				FCCC10BB2AAD313D0034E9A8 /* Data.swift in Sources */,
+				FCCC10B82AACFE3E0034E9A8 /* Settings.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCCC10AC2AACFD600034E9A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCCC10B32AACFD600034E9A8 /* CassiopeiaTests.swift in Sources */,
+				FCCC10B92AACFE3E0034E9A8 /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +384,36 @@
 			};
 			name = Release;
 		};
+		FCCC10B42AACFD600034E9A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q6UB3UBW7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aydarmedia.CassiopeiaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FCCC10B52AACFD600034E9A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q6UB3UBW7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aydarmedia.CassiopeiaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -328,6 +431,15 @@
 			buildConfigurations = (
 				FC657D262A8808B500EC8806 /* Debug */,
 				FC657D272A8808B500EC8806 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FCCC10B62AACFD600034E9A8 /* Build configuration list for PBXNativeTarget "CassiopeiaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FCCC10B42AACFD600034E9A8 /* Debug */,
+				FCCC10B52AACFD600034E9A8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

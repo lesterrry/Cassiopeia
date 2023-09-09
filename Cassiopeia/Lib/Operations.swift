@@ -7,14 +7,23 @@
 
 import KeychainBridge
 import Constellation
+import Foundation
 
 fileprivate let keychain = Keychain(serviceName: KeychainEntity.serviceName)
+
+public enum Command: String, CaseIterable {
+    case myCars = "mycars"
+    case saveCar = "savecar"
+    case getCar = "getcar"
+    case exit = "exit"
+}
 
 struct OperationResult {
     enum Status {
         case success
         case failure
         case warning
+        case silence
     }
     
     public let status: Status
@@ -29,6 +38,11 @@ struct OperationResult {
 }
 
 struct Operation {
+    public static func settingsPut(key: String, value: String) -> OperationResult {
+        Settings.defaults.set(value, forKey: key)
+        return OperationResult(.success)
+    }
+    
     public static func keychainPut(account: String, value: String) -> OperationResult {
         do {
             try keychain.saveToken(value, account: account)
@@ -41,8 +55,14 @@ struct Operation {
     public static func keychainCheck(account: String) -> OperationResult {
         let keychain = Keychain(serviceName: KeychainEntity.serviceName)
         guard let token = try? keychain.getToken(account: account)
-        else { return OperationResult(.failure, message: Strings.keychainEntityNotFoundFailureMessage.description) }
+        else { return OperationResult(.warning, message: Strings.keychainEntityNotFoundFailureMessage.description) }
         return OperationResult(.success, output: token)
+    }
+    
+    public static func settingCheck(key: String) -> OperationResult {
+        guard let setting = Settings.defaults.string(forKey: key)
+        else { return OperationResult(.warning, message: Strings.settingNotFoundFailureMessage.description) }
+        return OperationResult(.success, output: setting)
     }
     
     public static func apiInit(appId: String, appSecret: String) -> OperationResult {
@@ -54,7 +74,7 @@ struct Operation {
         }
     }
     
-    public static func apiAuth(_ client: inout ApiClient, login: String, password: String, smsCode: String? = nil) async -> OperationResult {
+    public static func apiAuth(client: inout ApiClient, login: String, password: String, smsCode: String? = nil) async -> OperationResult {
         var operationResult: OperationResult? = nil
         client.setCredentials(login: login, password: password)
         await client.auth(smsCode: smsCode) { result in
@@ -71,5 +91,60 @@ struct Operation {
             }
         }
         return operationResult!
+    }
+    
+    public static func runCommand(_ command: Command, client: ApiClient) async -> OperationResult {
+        switch command {
+        case .myCars:
+            var out: OperationResult? = nil
+            await client.getDevicesForCurrentUser { result in
+                switch result {
+                case .success(let data):
+                    let action = {
+                        setRawIndentLevel(1)
+                        stateUserCars(cars: data)
+                        resetRawIndentLevel()
+                    }
+                    out = OperationResult(.success, output: action)
+                case .failure(let error):
+                    out = OperationResult(.failure, message: error.localizedDescription)
+                }
+            }
+            return out!
+        case .saveCar:
+            let action = {
+                let id = state(.input(Strings.deviceIdPrompt.description)) as! String
+                state(.operation(Strings.genericWritingMessage.description, 2))
+                let result = Operation.settingsPut(key: Settings.Key.deviceId.rawValue, value: id)
+                state(.operationResult(result))
+            }
+            return OperationResult(.silence, output: action)
+        case .getCar:
+            guard let idString = Settings.defaults.string(forKey: Settings.Key.deviceId.rawValue), let id = Int(idString) else {
+                return OperationResult(.failure, message: Strings.settingNotFoundFailureMessage.description)
+            }
+            
+            var out: OperationResult? = nil
+            await client.getDeviceData(for: id) { result in
+                switch result {
+                case .success(let data):
+                    if case ApiResponse.Data.device(let device) = data {
+                        let action = {
+                            setRawIndentLevel(1)
+                            stateCar(device)
+                            resetRawIndentLevel()
+                        }
+                        out = OperationResult(.success, output: action)
+                    } else {
+                        #warning("Unimplemented")
+                    }
+                case .failure(let error):
+                    out = OperationResult(.failure, message: error.localizedDescription)
+                }
+            }
+            return out!
+        case .exit:
+            exit(0)
+        }
     }
 }

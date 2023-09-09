@@ -9,17 +9,19 @@ import Darwin.C
 import Rainbow
 import Constellation
 
-typealias TokenCollection = [KeychainEntity.EssentialAccount : String?]
+typealias TokenCollection = [KeychainEntity.Account : String?]
+typealias SettingCollection = [Settings.Key : String?]
 
 enum Statement {
-    case line(String, Color? = nil)
-    case space(Int = 1)
+    case line(String, Color? = nil, Int = 0)
+    case indent(Int = 1)
     case operation(String, Int = 0)
     case operationResult(OperationResult, Int = 1)
     case fatalError(String)
     case input(String, Bool = false, Int = 1)
     case linebreak
     case modal(String)
+    case raw(() -> ())
 }
 
 fileprivate enum ModalResponse {
@@ -27,8 +29,8 @@ fileprivate enum ModalResponse {
     case no
 }
 
-fileprivate func makeIndent(_ times: Int) -> String {
-    return String(repeating: "    ", count: times)
+fileprivate func makeIndent(_ level: Int) -> String {
+    return String(repeating: "    ", count: level)
 }
 
 fileprivate func resolveColoredString(_ string: String, color: Color? = nil) -> String {
@@ -39,9 +41,10 @@ fileprivate func resolveColoredString(_ string: String, color: Color? = nil) -> 
     }
 }
 
-fileprivate func write(_ string: String..., nowrap: Bool = false) {
-    if string.count == 0 { print() }
-    else { print(string[0], terminator: nowrap ? "" : "\n") }
+fileprivate var rawIndentLevel: Int = 0
+
+fileprivate func write(_ string: String, nowrap: Bool = false) {
+    print(makeIndent(rawIndentLevel) + string, terminator: nowrap ? "" : "\n")
     if nowrap { fflush(stdout) }
 }
 
@@ -58,13 +61,21 @@ fileprivate func read(_ prompt: String, secret: Bool = false) -> String {
     return secretData ?? ""
 }
 
+func setRawIndentLevel(_ level: Int) {
+    rawIndentLevel = level
+}
+
+func resetRawIndentLevel() {
+    rawIndentLevel = 0
+}
+
 @discardableResult
 func state(_ statement: Statement) -> Any? {
     switch statement {
-    case .line(let content, let color):
-        write(resolveColoredString(content, color: color))
-    case .space(let times):
-        for _ in 1...times { write() }
+    case .line(let content, let color, let indentLevel):
+        write(makeIndent(indentLevel) + resolveColoredString(content, color: color))
+    case .indent(let level):
+        write(makeIndent(level), nowrap: true)
     case .operation(let title, let indentLevel):
         write("\(makeIndent(indentLevel))\(title)... ", nowrap: true)
     case .operationResult(let result, let indentLevel):
@@ -72,6 +83,7 @@ func state(_ statement: Statement) -> Any? {
         case .success: write(Strings.successResultLabel.description.applyingCodes(Color.green))
         case .failure: write(Strings.failureResultLabel.description.applyingCodes(Color.red))
         case .warning: write(Strings.warningResultLabel.description.applyingCodes(Color.yellow))
+        case .silence: print()
         }
         if let message = result.message { write("\(makeIndent(indentLevel))>>> \(message)") }
     case .fatalError(let message):
@@ -94,6 +106,10 @@ func state(_ statement: Statement) -> Any? {
                 write(Strings.modalExplicitResponsePrompt.description)
             }
         }
+    case .raw(let action):
+        print()
+        action()
+        print()
     }
     return nil
 }
@@ -101,13 +117,25 @@ func state(_ statement: Statement) -> Any? {
 @discardableResult
 func stateKeychainCheck() -> TokenCollection {
     var tokens: TokenCollection = [:]
-    for i in KeychainEntity.EssentialAccount.allCases {
+    for i in (KeychainEntity.Account.allCases) {
         state(.operation(i.rawValue, 1))
         let result = Operation.keychainCheck(account: i.rawValue)
         state(.operationResult(result, 2))
         tokens[i] = .some(result.output as? String)
     }
     return tokens
+}
+
+@discardableResult
+func stateSettingsCheck() -> SettingCollection {
+    var settings: SettingCollection = [:]
+    for i in (Settings.Key.allCases) {
+        state(.operation(i.rawValue, 1))
+        let result = Operation.settingCheck(key: i.rawValue)
+        state(.operationResult(result, 2))
+        settings[i] = .some(result.output as? String)
+    }
+    return settings
 }
 
 func stateFulfillTokensDialog(tokens: TokenCollection) -> TokenCollection {
@@ -155,7 +183,7 @@ func stateApiClientInit(appId: String, appSecret: String) async -> ApiClient {
             let password = state(.input(Strings.genericPasswordPrompt.description, true)) as! String
             state(.linebreak)
             state(.operation(Strings.AuthMessage.description))
-            let result = await Operation.apiAuth(&client, login: login, password: password)
+            let result = await Operation.apiAuth(client: &client, login: login, password: password)
             state(.operationResult(result))
             switch result.status {
             case .success:
@@ -167,9 +195,10 @@ func stateApiClientInit(appId: String, appSecret: String) async -> ApiClient {
                 let code = state(.input(Strings.genericSMSCodePrompt.description, false, 0)) as! String
                 state(.linebreak)
                 state(.operation(Strings.AuthMessage.description))
-                let result = await Operation.apiAuth(&client, login: login, password: password, smsCode: code)
+                let result = await Operation.apiAuth(client: &client, login: login, password: password, smsCode: code)
                 state(.operationResult(result))
                 return client
+            default: fatalError()
             }
         } else {
             state(.fatalError(Strings.necessaryKeychainEntitiesNotFoundFatalErrorMessage.description))
@@ -178,4 +207,32 @@ func stateApiClientInit(appId: String, appSecret: String) async -> ApiClient {
         ()
     }
     return result.output as! ApiClient
+}
+
+func stateCommandAwait(client: ApiClient) async {
+    let command = state(.input("", false, 0)) as! String
+    if Command.allCases.contains(where: { $0.rawValue == command }) {
+        state(.operation(Strings.GenericRunMessage.description))
+        let result = await Operation.runCommand(Command(rawValue: command)!, client: client)
+        state(.operationResult(result))
+        state(.raw(result.output as! () -> ()))
+    } else {
+        state(.line(Strings.unknownCommandErrorMessage.description, Color.red))
+    }
+}
+
+func stateCarTitle(car: ApiResponse.Device) {
+    state(.line("\(car.alias ?? Strings.nilValueLabel.description) (#\(car.deviceId))"))
+}
+
+func stateUserCars(cars: [ApiResponse.Device]) {
+    for i in cars {
+        stateCarTitle(car: i)
+    }
+}
+
+func stateCar(_ car: ApiResponse.Device) {
+    stateCarTitle(car: car)
+    rawIndentLevel += 1
+//    state(.line(car.))
 }

@@ -12,10 +12,12 @@ import Foundation
 struct Main {
     static func main() async {
         state(.line( Strings.welcomeMessage.description ))
-        state(.space())
+        state(.linebreak)
         state(.line( Strings.checkingKeychainMessage.description ))
 
         var tokens = stateKeychainCheck()
+        state(.line( Strings.checkingSettingsMessage.description ))
+        var settings = stateSettingsCheck()
 
         state(.linebreak)
         tokens = stateFulfillTokensDialog(tokens: tokens)
@@ -24,13 +26,12 @@ struct Main {
 
         let client = await stateApiClientInit(appId: tokens[.appId]!!, appSecret: tokens[.appSecret]!!)
         
-        await client.getDevicesForCurrentUser { result in
-            switch result {
-            case .success(let data):
-                print(data)
-            case .failure(let error):
-                print("\(error)", error.localizedDescription)
-            }
-        }
+        state(.linebreak)
+        state(.line(Strings.readyForInputMessage.description))
+        
+        repeat {
+            await stateCommandAwait(client: client)
+        } while true
+        
     }
 }
