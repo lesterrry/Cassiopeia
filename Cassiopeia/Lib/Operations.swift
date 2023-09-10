@@ -144,6 +144,7 @@ struct Operation {
             }
             return out!
         case .exit:
+            print()
             exit(0)
         }
     }

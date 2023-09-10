@@ -215,7 +215,9 @@ func stateCommandAwait(client: ApiClient) async {
         state(.operation(Strings.GenericRunMessage.description))
         let result = await Operation.runCommand(Command(rawValue: command)!, client: client)
         state(.operationResult(result))
-        state(.raw(result.output as! () -> ()))
+        if let action = result.output as? () -> () {
+            state(.raw(action))
+        }
     } else {
         state(.line(Strings.unknownCommandErrorMessage.description, Color.red))
     }
@@ -233,6 +235,9 @@ func stateUserCars(cars: [ApiResponse.Device]) {
 
 func stateCar(_ car: ApiResponse.Device) {
     stateCarTitle(car: car)
+    let descriptive = car.descriptive()
     rawIndentLevel += 1
-//    state(.line(car.))
+    state(.line("Doors: \(descriptive.$doorsOpen)"))
+    state(.line("GSM: \(descriptive.$gsmLevel) (\(String(describing: descriptive.gsmLevel)))"))
+    resetRawIndentLevel()
 }

@@ -153,4 +153,36 @@ public struct Strings {
         en: "<nil>",
         ru: "<nil>"
     )
+    public static let genericOpenLabel = LocalizedString(
+        en: "ОТКР.",
+        ru: "OPEN"
+    )
+    public static let genericClosedLabel = LocalizedString(
+        en: "ЗАКР.",
+        ru: "CLOSED"
+    )
+    public static let genericOnLabel = LocalizedString(
+        en: "ВКЛ.",
+        ru: "ON"
+    )
+    public static let genericOffLabel = LocalizedString(
+        en: "ВЫКЛ.",
+        ru: "OFF"
+    )
+    public static let genericYesLabel = LocalizedString(
+        en: "ДА",
+        ru: "YES"
+    )
+    public static let genericNoLabel = LocalizedString(
+        en: "НЕТ",
+        ru: "NO"
+    )
+    public static let brokenPerimeterLabel = LocalizedString(
+        en: "BROKEN",
+        ru: "НАРУШ."
+    )
+    public static let genericUnknownLabel = LocalizedString(
+        en: "UNKNOWN",
+        ru: "НЕИЗВ."
+    )
 }

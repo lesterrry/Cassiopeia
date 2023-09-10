@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Constellation
 
-public struct CarData {
+public struct DescriptiveDevice {
     public enum State {
         case armed
         case disarmed
@@ -18,21 +19,34 @@ public struct CarData {
         case unknown
     }
     
-    public var alias: String? = nil
-    @DescriptiveBooleanState(trueDescription: "откр", falseDescription: "закр") public var doorsOpen: Bool? = nil
-    @DescriptiveBooleanState(trueDescription: "вкл", falseDescription: "выкл")  public var parkingBrakeEngaged: Bool? = nil
-    @DescriptiveBooleanState(trueDescription: "откр", falseDescription: "закр") public var hoodOpen: Bool? = nil
-    @DescriptiveBooleanState(trueDescription: "откр", falseDescription: "закр") public var trunkOpen: Bool? = nil
-    @DescriptiveBooleanState(trueDescription: "вкл", falseDescription: "выкл") public var ignitionPowered: Bool? = nil
-    @DescriptiveBooleanState(trueDescription: "вкл", falseDescription: "откл") public var isArmed: Bool? = nil
-    @DescriptiveBooleanState(trueDescription: "нет", falseDescription: "да") public var alarmTriggered: Bool? = nil
-    @DescriptiveBooleanState(trueDescription: "вкл", falseDescription: "выкл") public var valetModeOn: Bool? = nil
-    @DescriptiveBooleanState(trueDescription: "вкл", falseDescription: "выкл") public var stayHomeModeOn: Bool? = nil
+    public let alias: String?
+    
+    @DescriptiveBoolean(trueDescription: Strings.genericOpenLabel.description, falseDescription: Strings.genericClosedLabel.description)
+        public var doorsOpen: Bool? = nil
+    @DescriptiveBoolean(trueDescription: Strings.genericOnLabel.description, falseDescription: Strings.genericOffLabel.description)
+        public var parkingBrakeEngaged: Bool? = nil
+    @DescriptiveBoolean(trueDescription: Strings.genericOpenLabel.description, falseDescription: Strings.genericClosedLabel.description)
+        public var hoodOpen: Bool? = nil
+    @DescriptiveBoolean(trueDescription: Strings.genericOpenLabel.description, falseDescription: Strings.genericClosedLabel.description)
+        public var trunkOpen: Bool? = nil
+    @DescriptiveBoolean(trueDescription: Strings.genericOnLabel.description, falseDescription: Strings.genericOffLabel.description)
+        public var ignitionPowered: Bool? = nil
+    @DescriptiveBoolean(trueDescription: Strings.genericOnLabel.description, falseDescription: Strings.genericOffLabel.description)
+        public var isArmed: Bool? = nil
+    @DescriptiveBoolean(trueDescription: Strings.genericYesLabel.description, falseDescription: Strings.genericNoLabel.description) public var alarmTriggered: Bool? = nil
+    @DescriptiveBoolean(trueDescription: Strings.genericOnLabel.description, falseDescription: Strings.genericOffLabel.description)
+        public var valetModeOn: Bool? = nil
+    @DescriptiveBoolean(trueDescription: Strings.genericOnLabel.description, falseDescription: Strings.genericOffLabel.description)
+        public var stayHomeModeOn: Bool? = nil
+    
+    @DescriptiveFloat(steps: [(28...40, "окей")], fallback: "ХЗ")
+        public var gsmLevel: Float? = nil
+    
+    public var gpsLevel: Float? = nil
+    
     public var remainingDistance: Int? = nil
     public var batteryVoltage: Float? = nil
-    public var gsmLevel: Float? = nil
-    public var gpsLevel: Float? = nil
-    public var temp: Float? = nil
+    public var temperature: Float? = nil
     
     public func state() -> State? {
         if self.alarmTriggered ?? false { return .alarm }
@@ -43,24 +57,49 @@ public struct CarData {
         return .unknown
     }
     public func perimeter() -> String {
-        guard let doors = self.doorsOpen, let trunk = self.trunkOpen, let hood = self.hoodOpen else { return "неизв" }
-        if !doors && !trunk && !hood { return "закр" }
-        else { return "наруш" }
-    }
-    // TODO: move to propertyWrapper for ints
-    public func gsmLevelDescription() -> String {
-        guard let level = gsmLevel else { return "неизв" }
-        switch level {
-            case 0...10: return "плох"
-            case 10...20: return "норм"
-            case 20...30: return "хор"
-            default: return "отл"
-        }
+        guard let doors = self.doorsOpen, let trunk = self.trunkOpen, let hood = self.hoodOpen else { return Strings.genericUnknownLabel.description }
+        if !doors && !trunk && !hood { return Strings.genericClosedLabel.description }
+        else { return Strings.brokenPerimeterLabel.description }
     }
 }
 
 @propertyWrapper
-public struct DescriptiveBooleanState {
+public struct DescriptiveFloat {
+    public typealias Steps = [(ClosedRange<Int>, String)]
+    
+    private var value: Float?
+    private let steps: Steps
+    private let fallback: String
+    private let description: String
+    
+    public init(wrappedValue: Float?, steps: Steps, fallback: String) {
+        func getDescription() -> String {
+            guard let value = wrappedValue else { return fallback }
+            for i in steps {
+                if i.0.contains(Int(value)) { return i.1 }
+            }
+            return fallback
+        }
+        
+        self.value = wrappedValue
+        self.steps = steps
+        self.fallback = fallback
+        self.description = getDescription()
+    }
+    
+    public var wrappedValue: Float? {
+        get { value }
+        set { value = newValue }
+    }
+    
+    public var projectedValue: String {
+        return description
+    }
+    
+}
+
+@propertyWrapper
+public struct DescriptiveBoolean {
     private var value: Bool?
     private let trueDescription: String
     private let falseDescription: String
@@ -85,5 +124,15 @@ public struct DescriptiveBooleanState {
         case .none:
             return "неизв"
         }
+    }
+}
+
+public extension ApiResponse.Device {
+    func descriptive() -> DescriptiveDevice {
+        return DescriptiveDevice(
+            alias: self.alias,
+            doorsOpen: self.state?.door,
+            gsmLevel: self.common?.gsmLevel
+        )
     }
 }

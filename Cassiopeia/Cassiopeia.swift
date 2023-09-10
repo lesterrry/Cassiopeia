@@ -17,7 +17,7 @@ struct Main {
 
         var tokens = stateKeychainCheck()
         state(.line( Strings.checkingSettingsMessage.description ))
-        var settings = stateSettingsCheck()
+        stateSettingsCheck()
 
         state(.linebreak)
         tokens = stateFulfillTokensDialog(tokens: tokens)
