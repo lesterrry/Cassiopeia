@@ -41,11 +41,21 @@ fileprivate func resolveColoredString(_ string: String, color: Color? = nil) -> 
     }
 }
 
-fileprivate var rawIndentLevel: Int = 0
+fileprivate var rawIndentLevel = 0
+fileprivate var rawIndentDisable = false
 
-fileprivate func write(_ string: String, nowrap: Bool = false) {
-    print(makeIndent(rawIndentLevel) + string, terminator: nowrap ? "" : "\n")
-    if nowrap { fflush(stdout) }
+fileprivate func write(_ string: String? = nil, nowrap: Bool = false) {
+    if string != nil {
+        print(makeIndent(rawIndentDisable ? 0 : rawIndentLevel) + string!, terminator: nowrap ? "" : "\n")
+    } else {
+        print()
+    }
+    if nowrap {
+        fflush(stdout)
+        rawIndentDisable = true
+    } else {
+        rawIndentDisable = false
+    }
 }
 
 fileprivate func read(_ prompt: String, secret: Bool = false) -> String {
@@ -93,7 +103,7 @@ func state(_ statement: Statement) -> Any? {
         let input = read("\(makeIndent(indentLevel))\(prompt): ", secret: secret)
         return input
     case .linebreak:
-        print()
+        write()
     case .modal(let prompt):
         let label = "\(Strings.modalYesLabel)/\(Strings.modalNoLabel)"
         while true {
@@ -107,9 +117,9 @@ func state(_ statement: Statement) -> Any? {
             }
         }
     case .raw(let action):
-        print()
+        write()
         action()
-        print()
+        write()
     }
     return nil
 }
@@ -223,13 +233,9 @@ func stateCommandAwait(client: ApiClient) async {
     }
 }
 
-func stateCarTitle(car: ApiResponse.Device, nowrap: Bool = false) {
-    state(.line("\(car.alias ?? Strings.nilValueLabel.description) (#\(car.deviceId))", nil, 0, nowrap))
-}
-
-func stateCarMetric(title: String, value: Any, exactValue: Any? = nil) {
+func stateCarMetric(title: String, value: Any?, exactValue: Any? = nil) {
     let exact = exactValue != nil ? " (\(exactValue!))" : ""
-    state(.line("\(title): \(value)\(exact)"))
+    state(.line("\(title): \(value ?? Strings.genericUnknownLabel)\(exact)"))
 }
 
 func stateCarState(_ carState: DescriptiveDevice.State?) {
@@ -253,16 +259,20 @@ func stateCarState(_ carState: DescriptiveDevice.State?) {
 
 func stateUserCars(cars: [ApiResponse.Device]) {
     for i in cars {
-        stateCarTitle(car: i)
+        state(.line("\(i.alias ?? Strings.nilValueLabel.description) (#\(i.deviceId))"))
     }
 }
 
 func stateCar(_ car: ApiResponse.Device) {
-    stateCarTitle(car: car, nowrap: true)
+    state(.line("\(car.alias ?? Strings.nilValueLabel.description) — ", nil, 0, true))
     let descriptive = car.descriptive()
     stateCarState(descriptive.state())
     rawIndentLevel += 1
+    
     stateCarMetric(title: Strings.doorsLabel.description, value: descriptive.$doorsOpen)
     stateCarMetric(title: Strings.gsmLabel.description, value: descriptive.$gsmLevel, exactValue: descriptive.gsmLevel)
+    stateCarMetric(title: Strings.gpsLabel.description, value: descriptive.$gpsLevel, exactValue: descriptive.gpsLevel)
+    stateCarMetric(title: Strings.batteryLabel.description, value: descriptive.batteryVoltage)
+    
     resetRawIndentLevel()
 }

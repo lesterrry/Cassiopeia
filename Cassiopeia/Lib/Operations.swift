@@ -12,9 +12,10 @@ import Foundation
 fileprivate let keychain = Keychain(serviceName: KeychainEntity.serviceName)
 
 public enum Command: String, CaseIterable {
-    case myCars = "mycars"
-    case saveCar = "savecar"
-    case getCar = "getcar"
+    case myCars = "allcars"
+    case settings = "set"
+    case getCar = "status"
+    case help = "help"
     case exit = "exit"
 }
 
@@ -111,12 +112,21 @@ struct Operation {
                 }
             }
             return out!
-        case .saveCar:
+        case .settings:
             let action = {
-                let id = state(.input(Strings.deviceIdPrompt.description)) as! String
-                state(.operation(Strings.genericWritingMessage.description, 2))
-                let result = Operation.settingsPut(key: Settings.Key.deviceId.rawValue, value: id)
+                setRawIndentLevel(1)
+                state(.line(Strings.availableKeysPredecessor.description + Settings.Key.allCases.map({ $0.rawValue }).joined(separator: ", ")))
+                state(.linebreak)
+                let keyString = state(.input(Strings.settingKeyPrompt.description)) as! String
+                let valueString = state(.input(Strings.settingValuePrompt.description)) as! String
+                state(.operation(Strings.genericWritingMessage.description, 1))
+                guard let key = Settings.Key(rawValue: keyString) else {
+                    state(.operationResult(OperationResult(.failure, message: Strings.settingNotFoundFailureMessage.description), 2))
+                    return
+                }
+                let result = Operation.settingsPut(key: key.rawValue, value: valueString)
                 state(.operationResult(result))
+                resetRawIndentLevel()
             }
             return OperationResult(.silence, output: action)
         case .getCar:
@@ -143,6 +153,16 @@ struct Operation {
                 }
             }
             return out!
+        case .help:
+            let action = {
+                setRawIndentLevel(1)
+                state(.line(Strings.availableCommandsPredecessor.description))
+                for i in Command.allCases {
+                    state(.line(i.rawValue, nil, 1))
+                }
+                resetRawIndentLevel()
+            }
+            return OperationResult(.silence, output: action)
         case .exit:
             print()
             exit(0)

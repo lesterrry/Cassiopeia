@@ -113,9 +113,25 @@ public struct Strings {
         en: "Enter car ID",
         ru: "Введите ID автомобиля"
     )
+    public static let settingKeyPrompt = LocalizedString(
+        en: "Enter setting key",
+        ru: "Введите ключ настройки"
+    )
+    public static let settingValuePrompt = LocalizedString(
+        en: "Enter setting value",
+        ru: "Введите значение настройки"
+    )
     public static let modalExplicitResponsePrompt = LocalizedString(
         en: "Please state explicitly: '\(modalYesLabel.en)' or '\(modalNoLabel.en)'",
         ru: "Пожалуйста, ответьте явно: '\(modalYesLabel.ru)' или '\(modalNoLabel.ru)'"
+    )
+    public static let availableKeysPredecessor = LocalizedString(
+        en: "Available keys: ",
+        ru: "Доступные ключи: "
+    )
+    public static let availableCommandsPredecessor = LocalizedString(
+        en: "Available commands: ",
+        ru: "Доступные команды: "
     )
     public static let readyForInputMessage = LocalizedString(
         en: "Awaiting commands",
@@ -154,28 +170,28 @@ public struct Strings {
         ru: "<nil>"
     )
     public static let genericOpenLabel = LocalizedString(
-        en: "ОТКР.",
-        ru: "OPEN"
+        en: "OPEN",
+        ru: "ОТКР."
     )
     public static let genericClosedLabel = LocalizedString(
-        en: "ЗАКР.",
-        ru: "CLOSED"
+        en: "CLOSED",
+        ru: "ЗАКР."
     )
     public static let genericOnLabel = LocalizedString(
-        en: "ВКЛ.",
-        ru: "ON"
+        en: "ON",
+        ru: "ВКЛ."
     )
     public static let genericOffLabel = LocalizedString(
-        en: "ВЫКЛ.",
-        ru: "OFF"
+        en: "OFF",
+        ru: "ВЫКЛ."
     )
     public static let genericYesLabel = LocalizedString(
-        en: "ДА",
-        ru: "YES"
+        en: "YES",
+        ru: "ДА"
     )
     public static let genericNoLabel = LocalizedString(
-        en: "НЕТ",
-        ru: "NO"
+        en: "NO",
+        ru: "НЕТ"
     )
     public static let brokenPerimeterLabel = LocalizedString(
         en: "BROKEN",
@@ -208,6 +224,14 @@ public struct Strings {
     public static let gsmLabel = LocalizedString(
         en: "GSM",
         ru: "GSM"
+    )
+    public static let gpsLabel = LocalizedString(
+        en: "GPS",
+        ru: "GPS"
+    )
+    public static let batteryLabel = LocalizedString(
+        en: "Battery",
+        ru: "Аккумулятор"
     )
     public static let carArmedLabel = LocalizedString(
         en: "<ARMED>",

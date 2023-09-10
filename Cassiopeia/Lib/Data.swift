@@ -143,8 +143,14 @@ public extension ApiResponse.Device {
         return DescriptiveDevice(
             alias: self.alias,
             doorsOpen: self.state?.door,
-            isArmed: self.state?.arm,
-            gsmLevel: self.common?.gsmLevel
+            parkingBrakeEngaged: self.state?.parkingBrake, hoodOpen: self.state?.hood,
+            trunkOpen: self.state?.trunk,
+            ignitionPowered: self.state?.ignition, isArmed: self.state?.arm, alarmTriggered: self.state?.alarm,
+            valetModeOn: self.state?.valet, stayHomeModeOn: self.state?.stayHome, gsmLevel: self.common?.gsmLevel,
+            gpsLevel: self.common?.gpsLevel,
+            remainingDistance: self.obd?.remainingDistance,
+            batteryVoltage: self.common?.battery,
+            temperature: self.common?.moduleTemperature
         )
     }
 }
