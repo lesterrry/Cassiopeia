@@ -156,6 +156,8 @@ struct Operation {
         case .help:
             let action = {
                 setRawIndentLevel(1)
+                state(.line("Cassiopeia \(APP_VERSION)"))
+                state(.linebreak)
                 state(.line(Strings.availableCommandsPredecessor.description))
                 for i in Command.allCases {
                     state(.line(i.rawValue, nil, 1))
