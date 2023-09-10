@@ -185,4 +185,56 @@ public struct Strings {
         en: "UNKNOWN",
         ru: "НЕИЗВ."
     )
+    public static let genericPoorLabel = LocalizedString(
+        en: "POOR",
+        ru: "ПЛОХ."
+    )
+    public static let genericNormalLabel = LocalizedString(
+        en: "NORM",
+        ru: "НОРМ."
+    )
+    public static let genericWellLabel = LocalizedString(
+        en: "OKAY",
+        ru: "ХОРОШ."
+    )
+    public static let genericExcellentLabel = LocalizedString(
+        en: "EXCEL.",
+        ru: "ОТЛИЧ."
+    )
+    public static let doorsLabel = LocalizedString(
+        en: "Doors",
+        ru: "Двери"
+    )
+    public static let gsmLabel = LocalizedString(
+        en: "GSM",
+        ru: "GSM"
+    )
+    public static let carArmedLabel = LocalizedString(
+        en: "<ARMED>",
+        ru: "<В ОХРАНЕ>"
+    )
+    public static let carDisarmedLabel = LocalizedString(
+        en: "<DISARMED>",
+        ru: "<СНЯТО>"
+    )
+    public static let carRunningLabel = LocalizedString(
+        en: "<RUNNING>",
+        ru: "<ЗАПУСК>"
+    )
+    public static let carAlarmLabel = LocalizedString(
+        en: "<ALARM>",
+        ru: "<ТРЕВОГА>"
+    )
+    public static let carServiceLabel = LocalizedString(
+        en: "<SERVICE>",
+        ru: "<СЕРВИС>"
+    )
+    public static let carStayHomeLabel = LocalizedString(
+        en: "<STAYHOME>",
+        ru: "<STAYHOME>"
+    )
+    public static let carUnknownLabel = LocalizedString(
+        en: "<UNKNOWN>",
+        ru: "<НЕИЗВЕСТНО>"
+    )
 }

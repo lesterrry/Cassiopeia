@@ -13,7 +13,7 @@ typealias TokenCollection = [KeychainEntity.Account : String?]
 typealias SettingCollection = [Settings.Key : String?]
 
 enum Statement {
-    case line(String, Color? = nil, Int = 0)
+    case line(String, Color? = nil, Int = 0, Bool = false)
     case indent(Int = 1)
     case operation(String, Int = 0)
     case operationResult(OperationResult, Int = 1)
@@ -72,8 +72,8 @@ func resetRawIndentLevel() {
 @discardableResult
 func state(_ statement: Statement) -> Any? {
     switch statement {
-    case .line(let content, let color, let indentLevel):
-        write(makeIndent(indentLevel) + resolveColoredString(content, color: color))
+    case .line(let content, let color, let indentLevel, let nowrap):
+        write(makeIndent(indentLevel) + resolveColoredString(content, color: color), nowrap: nowrap)
     case .indent(let level):
         write(makeIndent(level), nowrap: true)
     case .operation(let title, let indentLevel):
@@ -223,8 +223,32 @@ func stateCommandAwait(client: ApiClient) async {
     }
 }
 
-func stateCarTitle(car: ApiResponse.Device) {
-    state(.line("\(car.alias ?? Strings.nilValueLabel.description) (#\(car.deviceId))"))
+func stateCarTitle(car: ApiResponse.Device, nowrap: Bool = false) {
+    state(.line("\(car.alias ?? Strings.nilValueLabel.description) (#\(car.deviceId))", nil, 0, nowrap))
+}
+
+func stateCarMetric(title: String, value: Any, exactValue: Any? = nil) {
+    let exact = exactValue != nil ? " (\(exactValue!))" : ""
+    state(.line("\(title): \(value)\(exact)"))
+}
+
+func stateCarState(_ carState: DescriptiveDevice.State?) {
+    switch carState {
+    case .armed:
+        state(.line(Strings.carArmedLabel.description, Color.green))
+    case .disarmed:
+        state(.line(Strings.carDisarmedLabel.description, Color.lightWhite))
+    case .running:
+        state(.line(Strings.carRunningLabel.description, Color.lightRed))
+    case .alarm:
+        state(.line(Strings.carAlarmLabel.description, Color.red))
+    case .service:
+        state(.line(Strings.carServiceLabel.description, Color.yellow))
+    case .stayHome:
+        state(.line(Strings.carStayHomeLabel.description, Color.blue))
+    case .unknown, nil:
+        state(.line(Strings.carUnknownLabel.description, Color.lightWhite))
+    }
 }
 
 func stateUserCars(cars: [ApiResponse.Device]) {
@@ -234,10 +258,11 @@ func stateUserCars(cars: [ApiResponse.Device]) {
 }
 
 func stateCar(_ car: ApiResponse.Device) {
-    stateCarTitle(car: car)
+    stateCarTitle(car: car, nowrap: true)
     let descriptive = car.descriptive()
+    stateCarState(descriptive.state())
     rawIndentLevel += 1
-    state(.line("Doors: \(descriptive.$doorsOpen)"))
-    state(.line("GSM: \(descriptive.$gsmLevel) (\(String(describing: descriptive.gsmLevel)))"))
+    stateCarMetric(title: Strings.doorsLabel.description, value: descriptive.$doorsOpen)
+    stateCarMetric(title: Strings.gsmLabel.description, value: descriptive.$gsmLevel, exactValue: descriptive.gsmLevel)
     resetRawIndentLevel()
 }

@@ -39,16 +39,27 @@ public struct DescriptiveDevice {
     @DescriptiveBoolean(trueDescription: Strings.genericOnLabel.description, falseDescription: Strings.genericOffLabel.description)
         public var stayHomeModeOn: Bool? = nil
     
-    @DescriptiveFloat(steps: [(28...40, "окей")], fallback: "ХЗ")
+    @DescriptiveFloat(steps: [
+        (0...20, Strings.genericPoorLabel.description),
+        (20...24, Strings.genericNormalLabel.description),
+        (24...28, Strings.genericWellLabel.description),
+        (28...100, Strings.genericExcellentLabel.description)
+    ], fallback: Strings.genericUnknownLabel.description)
         public var gsmLevel: Float? = nil
     
-    public var gpsLevel: Float? = nil
+    @DescriptiveFloat(steps: [
+        (0...20, Strings.genericPoorLabel.description),
+        (20...24, Strings.genericNormalLabel.description),
+        (24...28, Strings.genericWellLabel.description),
+        (28...100, Strings.genericExcellentLabel.description)
+    ], fallback: Strings.genericUnknownLabel.description)
+        public var gpsLevel: Float? = nil
     
     public var remainingDistance: Int? = nil
     public var batteryVoltage: Float? = nil
     public var temperature: Float? = nil
     
-    public func state() -> State? {
+    public func state() -> State {
         if self.alarmTriggered ?? false { return .alarm }
         if self.valetModeOn ?? false { return .service }
         if self.ignitionPowered ?? false { return .running }
@@ -104,7 +115,7 @@ public struct DescriptiveBoolean {
     private let trueDescription: String
     private let falseDescription: String
     
-    public init(wrappedValue: Bool?, trueDescription: String = "да", falseDescription: String = "нет") {
+    public init(wrappedValue: Bool?, trueDescription: String = Strings.genericYesLabel.description, falseDescription: String = Strings.genericNoLabel.description) {
         self.value = wrappedValue
         self.trueDescription = trueDescription
         self.falseDescription = falseDescription
@@ -122,7 +133,7 @@ public struct DescriptiveBoolean {
         case .some(false):
             return falseDescription
         case .none:
-            return "неизв"
+            return Strings.genericUnknownLabel.description
         }
     }
 }
@@ -132,6 +143,7 @@ public extension ApiResponse.Device {
         return DescriptiveDevice(
             alias: self.alias,
             doorsOpen: self.state?.door,
+            isArmed: self.state?.arm,
             gsmLevel: self.common?.gsmLevel
         )
     }
