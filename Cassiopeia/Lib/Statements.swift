@@ -180,7 +180,7 @@ func stateApiClientInit(appId: String, appSecret: String) async -> ApiClient {
             case .success(_):
                 state(.operationResult(OperationResult(.success)))
             case .failure(let error):
-                state(.operationResult(OperationResult(.failure, message: "\(error)" + error.localizedDescription)))
+                state(.operationResult(OperationResult(.failure, message: "\(error)" + String(describing: error))))
             }
         }
         

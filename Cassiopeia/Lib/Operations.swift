@@ -48,7 +48,7 @@ struct Operation {
         do {
             try keychain.saveToken(value, account: account)
         } catch {
-            return OperationResult(.failure, message: error.localizedDescription)
+            return OperationResult(.failure, message: String(describing: error))
         }
         return OperationResult(.success)
     }
@@ -82,7 +82,7 @@ struct Operation {
             switch result {
             case .failure(let error):
                 guard case ApiClient.AuthError.secondFactorRequired = error else {
-                    operationResult = OperationResult(.failure, message: "\(error.localizedDescription): \(error as! ApiClient.AuthError)")
+                    operationResult = OperationResult(.failure, message: "\(String(describing: error)): \(error as! ApiClient.AuthError)")
                     break
                 }
                 operationResult = OperationResult(.warning, message: Strings.secondFactorEnabledWarningMessage.description)
@@ -108,7 +108,7 @@ struct Operation {
                     }
                     out = OperationResult(.success, output: action)
                 case .failure(let error):
-                    out = OperationResult(.failure, message: error.localizedDescription)
+                    out = OperationResult(.failure, message: String(describing: error))
                 }
             }
             return out!
@@ -149,7 +149,7 @@ struct Operation {
                         #warning("Unimplemented")
                     }
                 case .failure(let error):
-                    out = OperationResult(.failure, message: error.localizedDescription)
+                    out = OperationResult(.failure, message: String(describing: error))
                 }
             }
             return out!
