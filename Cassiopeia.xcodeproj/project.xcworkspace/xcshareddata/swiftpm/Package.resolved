@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lesterrry/Constellation",
       "state" : {
-        "revision" : "fddeb187ffe56280bf3fc6c1fa72199d9d347403",
-        "version" : "0.1.7"
+        "revision" : "5866ca9098bf556d88f21a5ffb11d08e27a263e3",
+        "version" : "0.2.1"
       }
     },
     {

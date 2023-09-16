@@ -14,9 +14,15 @@ fileprivate let keychain = Keychain(serviceName: KeychainEntity.serviceName)
 public enum Command: String, CaseIterable {
     case myCars = "allcars"
     case settings = "set"
-    case getCar = "status"
     case help = "help"
     case exit = "exit"
+    
+    case getCar = "status"
+    case arm = "!arm"
+    case disarm = "!disarm"
+    case engineStart = "!start"
+    case engineStop = "!stop"
+    case honk = "!honk"
 }
 
 struct OperationResult {
@@ -87,7 +93,6 @@ struct Operation {
                 }
                 operationResult = OperationResult(.warning, message: Strings.secondFactorEnabledWarningMessage.description)
             case .success(let token):
-                print(token)
                 operationResult = OperationResult(.success, output: token)
             }
         }
@@ -129,6 +134,21 @@ struct Operation {
                 resetRawIndentLevel()
             }
             return OperationResult(.silence, output: action)
+        case .help:
+            let action = {
+                setRawIndentLevel(1)
+                state(.line("Cassiopeia \(APP_VERSION)"))
+                state(.linebreak)
+                state(.line(Strings.availableCommandsPredecessor.description))
+                for i in Command.allCases {
+                    state(.line(i.rawValue, nil, 1))
+                }
+                resetRawIndentLevel()
+            }
+            return OperationResult(.silence, output: action)
+        case .exit:
+            print()
+            exit(0)
         case .getCar:
             guard let idString = Settings.defaults.string(forKey: Settings.Key.deviceId.rawValue), let id = Int(idString) else {
                 return OperationResult(.failure, message: Strings.settingNotFoundFailureMessage.description)
@@ -146,28 +166,41 @@ struct Operation {
                         }
                         out = OperationResult(.success, output: action)
                     } else {
-                        #warning("Unimplemented")
+                        out = OperationResult(.failure, message: Strings.genericCorruptedDataFatalErrorMessage.description)
                     }
                 case .failure(let error):
                     out = OperationResult(.failure, message: String(describing: error))
                 }
             }
             return out!
-        case .help:
-            let action = {
-                setRawIndentLevel(1)
-                state(.line("Cassiopeia \(APP_VERSION)"))
-                state(.linebreak)
-                state(.line(Strings.availableCommandsPredecessor.description))
-                for i in Command.allCases {
-                    state(.line(i.rawValue, nil, 1))
-                }
-                resetRawIndentLevel()
-            }
-            return OperationResult(.silence, output: action)
-        case .exit:
-            print()
-            exit(0)
+
+        case .arm:
+            return await runSetParamCommand(.arm, client: client)
+        case .disarm:
+            return await runSetParamCommand(.disarm, client: client)
+        case .engineStart:
+            return await runSetParamCommand(.ignitionStart, client: client)
+        case .engineStop:
+            return await runSetParamCommand(.ignitionStop, client: client)
+        case .honk:
+            return await runSetParamCommand(.honk, client: client)
         }
+    }
+    
+    private static func runSetParamCommand(_ command: ApiClient.Command, client: ApiClient) async -> OperationResult {
+        guard let idString = Settings.defaults.string(forKey: Settings.Key.deviceId.rawValue), let id = Int(idString) else {
+            return OperationResult(.failure, message: Strings.settingNotFoundFailureMessage.description)
+        }
+        
+        var out: OperationResult? = nil
+        await client.runCommand(command, on: id) { result in
+            switch result {
+            case .success():
+                out = OperationResult(.success)
+            case .failure(let error):
+                out = OperationResult(.failure, message: String(describing: error))
+            }
+        }
+        return out!
     }
 }

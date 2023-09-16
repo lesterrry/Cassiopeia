@@ -73,6 +73,10 @@ public struct Strings {
         en: "Failed to initialize api client",
         ru: "Не удалось инициализировать клиент"
     )
+    public static let genericCorruptedDataFatalErrorMessage = LocalizedString(
+        en: "Corrupted data",
+        ru: "Некорректные данные"
+    )
     public static let necessaryKeychainEntityNotFoundDialogMessage = LocalizedString(
         en: "Necessary token not found in keychain",
         ru: "Необходимый ключ отсутствуют в связке"
@@ -80,6 +84,10 @@ public struct Strings {
     public static let authTokenDialogPrompt = LocalizedString(
         en: "Do you want to authorize?",
         ru: "Хотите авторизоваться?"
+    )
+    public static let commandDialogPrompt = LocalizedString(
+        en: "Execute command",
+        ru: "Исполнить команду"
     )
     public static let authTokenNotFoundWarningMessage = LocalizedString(
         en: "Auth token not found",
@@ -221,6 +229,10 @@ public struct Strings {
         en: "Doors",
         ru: "Двери"
     )
+    public static let perimeterLabel = LocalizedString(
+        en: "Zone",
+        ru: "Периметр"
+    )
     public static let gsmLabel = LocalizedString(
         en: "GSM",
         ru: "GSM"
@@ -232,6 +244,30 @@ public struct Strings {
     public static let batteryLabel = LocalizedString(
         en: "Battery",
         ru: "Аккумулятор"
+    )
+    public static let rangeLabel = LocalizedString(
+        en: "Range",
+        ru: "Остаток пути"
+    )
+    public static let temperatureLabel = LocalizedString(
+        en: "Temperature",
+        ru: "Температура"
+    )
+    public static let handbrakeLabel = LocalizedString(
+        en: "Handbrake",
+        ru: "Ручник"
+    )
+    public static let kilometerLabel = LocalizedString(
+        en: " km.",
+        ru: " км."
+    )
+    public static let voltLabel = LocalizedString(
+        en: " v.",
+        ru: " в."
+    )
+    public static let celsiusLabel = LocalizedString(
+        en: "°C",
+        ru: "°C"
     )
     public static let carArmedLabel = LocalizedString(
         en: "<ARMED>",

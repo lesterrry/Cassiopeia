@@ -8,6 +8,13 @@
 import Foundation
 import Constellation
 
+public protocol AppendixApplicable {}
+
+extension Int: AppendixApplicable {}
+extension Float: AppendixApplicable {}
+extension String: AppendixApplicable {}
+
+
 public struct DescriptiveDevice {
     public enum State {
         case armed
@@ -33,7 +40,8 @@ public struct DescriptiveDevice {
         public var ignitionPowered: Bool? = nil
     @DescriptiveBoolean(trueDescription: Strings.genericOnLabel.description, falseDescription: Strings.genericOffLabel.description)
         public var isArmed: Bool? = nil
-    @DescriptiveBoolean(trueDescription: Strings.genericYesLabel.description, falseDescription: Strings.genericNoLabel.description) public var alarmTriggered: Bool? = nil
+    @DescriptiveBoolean(trueDescription: Strings.genericYesLabel.description, falseDescription: Strings.genericNoLabel.description)
+        public var alarmTriggered: Bool? = nil
     @DescriptiveBoolean(trueDescription: Strings.genericOnLabel.description, falseDescription: Strings.genericOffLabel.description)
         public var valetModeOn: Bool? = nil
     @DescriptiveBoolean(trueDescription: Strings.genericOnLabel.description, falseDescription: Strings.genericOffLabel.description)
@@ -48,16 +56,19 @@ public struct DescriptiveDevice {
         public var gsmLevel: Float? = nil
     
     @DescriptiveFloat(steps: [
-        (0...20, Strings.genericPoorLabel.description),
-        (20...24, Strings.genericNormalLabel.description),
-        (24...28, Strings.genericWellLabel.description),
-        (28...100, Strings.genericExcellentLabel.description)
+        (0...4, Strings.genericPoorLabel.description),
+        (4...8, Strings.genericNormalLabel.description),
+        (8...10, Strings.genericWellLabel.description),
+        (10...100, Strings.genericExcellentLabel.description)
     ], fallback: Strings.genericUnknownLabel.description)
         public var gpsLevel: Float? = nil
     
-    public var remainingDistance: Int? = nil
-    public var batteryVoltage: Float? = nil
-    public var temperature: Float? = nil
+    @WithAppendix(appendix: Strings.kilometerLabel.description)
+        public var remainingDistance: Int? = nil
+    @WithAppendix(appendix: Strings.voltLabel.description)
+        public var batteryVoltage: Float? = nil
+    @WithAppendix(appendix: Strings.celsiusLabel.description)
+        public var temperature: Float? = nil
     
     public func state() -> State {
         if self.alarmTriggered ?? false { return .alarm }
@@ -138,15 +149,42 @@ public struct DescriptiveBoolean {
     }
 }
 
+@propertyWrapper
+public struct WithAppendix<T: AppendixApplicable> {
+    private var value: T?
+    private let appendix: String
+    
+    public init(wrappedValue: T?, appendix: String) {
+        self.value = wrappedValue
+        self.appendix = appendix
+    }
+    
+    public var wrappedValue: T? {
+        get { value }
+        set { value = newValue }
+    }
+    
+    public var projectedValue: String {
+        if self.value == nil { return "--\(appendix)" }
+        
+        return String(describing: self.value!) + appendix
+    }
+}
+
 public extension ApiResponse.Device {
     func descriptive() -> DescriptiveDevice {
         return DescriptiveDevice(
             alias: self.alias,
             doorsOpen: self.state?.door,
-            parkingBrakeEngaged: self.state?.parkingBrake, hoodOpen: self.state?.hood,
+            parkingBrakeEngaged: self.state?.parkingBrake,
+            hoodOpen: self.state?.hood,
             trunkOpen: self.state?.trunk,
-            ignitionPowered: self.state?.ignition, isArmed: self.state?.arm, alarmTriggered: self.state?.alarm,
-            valetModeOn: self.state?.valet, stayHomeModeOn: self.state?.stayHome, gsmLevel: self.common?.gsmLevel,
+            ignitionPowered: self.state?.ignition,
+            isArmed: self.state?.arm,
+            alarmTriggered: self.state?.alarm,
+            valetModeOn: self.state?.valet,
+            stayHomeModeOn: self.state?.stayHome,
+            gsmLevel: self.common?.gsmLevel,
             gpsLevel: self.common?.gpsLevel,
             remainingDistance: self.obd?.remainingDistance,
             batteryVoltage: self.common?.battery,

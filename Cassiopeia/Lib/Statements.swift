@@ -222,11 +222,19 @@ func stateApiClientInit(appId: String, appSecret: String) async -> ApiClient {
 func stateCommandAwait(client: ApiClient) async {
     let command = state(.input("", false, 0)) as! String
     if Command.allCases.contains(where: { $0.rawValue == command }) {
+        if command.first! == Character("!") {
+            state(.linebreak)
+            let prompt = "\(Strings.commandDialogPrompt.description) \(command.dropFirst())?"
+            let response = state(.modal(prompt)) as! ModalResponse
+            if response != .yes { return }
+        }
         state(.operation(Strings.GenericRunMessage.description))
         let result = await Operation.runCommand(Command(rawValue: command)!, client: client)
         state(.operationResult(result))
         if let action = result.output as? () -> () {
             state(.raw(action))
+        } else {
+            state(.linebreak)
         }
     } else {
         state(.line(Strings.unknownCommandErrorMessage.description, Color.red))
@@ -235,7 +243,7 @@ func stateCommandAwait(client: ApiClient) async {
 
 func stateCarMetric(title: String, value: Any?, exactValue: Any? = nil) {
     let exact = exactValue != nil ? " (\(exactValue!))" : ""
-    state(.line("\(title): \(value ?? Strings.genericUnknownLabel)\(exact)"))
+    state(.line("\(title.applyingStyle(.bold)): \(value ?? Strings.genericUnknownLabel)\(exact)"))
 }
 
 func stateCarState(_ carState: DescriptiveDevice.State?) {
@@ -243,7 +251,7 @@ func stateCarState(_ carState: DescriptiveDevice.State?) {
     case .armed:
         state(.line(Strings.carArmedLabel.description, Color.green))
     case .disarmed:
-        state(.line(Strings.carDisarmedLabel.description, Color.lightWhite))
+        state(.line(Strings.carDisarmedLabel.description, Color.lightBlack))
     case .running:
         state(.line(Strings.carRunningLabel.description, Color.lightRed))
     case .alarm:
@@ -269,10 +277,13 @@ func stateCar(_ car: ApiResponse.Device) {
     stateCarState(descriptive.state())
     rawIndentLevel += 1
     
-    stateCarMetric(title: Strings.doorsLabel.description, value: descriptive.$doorsOpen)
+    stateCarMetric(title: Strings.perimeterLabel.description, value: descriptive.perimeter())
+    stateCarMetric(title: Strings.handbrakeLabel.description, value: descriptive.$parkingBrakeEngaged)
     stateCarMetric(title: Strings.gsmLabel.description, value: descriptive.$gsmLevel, exactValue: descriptive.gsmLevel)
     stateCarMetric(title: Strings.gpsLabel.description, value: descriptive.$gpsLevel, exactValue: descriptive.gpsLevel)
-    stateCarMetric(title: Strings.batteryLabel.description, value: descriptive.batteryVoltage)
+    stateCarMetric(title: Strings.batteryLabel.description, value: descriptive.$batteryVoltage)
+    stateCarMetric(title: Strings.rangeLabel.description, value: descriptive.$remainingDistance)
+    stateCarMetric(title: Strings.temperatureLabel.description, value: descriptive.$temperature)
     
     resetRawIndentLevel()
 }
