@@ -9,7 +9,6 @@ __Built on__:
 __Example usage__:
 
 ```
-Awaiting commands
 : status
 Running... [OKAY]
 
